@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>[온도기]에 초대합니다</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;500;800&family=IBM+Plex+Sans+KR:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#E8ECE7; --ink:#18213B; --mute:#5A6378; --mercury:#F0A92B; --line:#18213B33;
+  --serif:"Noto Serif KR","Nanum Myeongjo","Apple SD Gothic Neo",serif;
+  --sans:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){--paper:#121A30;--ink:#E8ECE7;--mute:#9AA3B8;--mercury:#F5B83F;--line:#E8ECE733}
+}
+:root[data-theme="dark"]{--paper:#121A30;--ink:#E8ECE7;--mute:#9AA3B8;--mercury:#F5B83F;--line:#E8ECE733}
+*{box-sizing:border-box;margin:0}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-weight:300;line-height:1.9;font-size:17px;word-break:keep-all;-webkit-font-smoothing:antialiased}
+
+/* thermometer ruler */
+.ruler{position:fixed;left:0;top:0;bottom:0;width:72px;border-right:1px solid var(--line);z-index:2;
+  background:repeating-linear-gradient(to bottom,var(--ink) 0 1px,transparent 1px 12px) right 0 top 0/16px 100% no-repeat,
+             repeating-linear-gradient(to bottom,var(--ink) 0 1px,transparent 1px 60px) right 0 top 0/30px 100% no-repeat}
+.ruler i{position:absolute;right:0;top:0;width:6px;height:0;background:var(--mercury);transition:height .12s linear}
+.ruler b{position:absolute;right:10px;bottom:calc(env(safe-area-inset-bottom,0px) + 18px);font:400 12px/1 var(--sans);color:var(--mute);writing-mode:vertical-rl;letter-spacing:.2em}
+
+main{margin-left:72px;padding:0 clamp(24px,7vw,120px) 120px}
+.wrap{max-width:660px}
+
+header{min-height:92vh;display:flex;flex-direction:column;justify-content:flex-end;padding:12vh 0 8vh}
+.pre{font:400 15px/1.6 var(--sans);color:var(--mute);margin-bottom:1.2rem}
+h1{font-family:var(--serif);font-weight:800;font-size:clamp(88px,22vw,230px);line-height:.95;letter-spacing:-.04em}
+h1 span{display:block;font-weight:300;font-size:clamp(22px,4vw,34px);letter-spacing:0;line-height:1.4;margin-top:1.6rem}
+.sub{font-family:var(--serif);font-weight:500;font-size:clamp(18px,2.4vw,22px);line-height:1.7;margin-top:2.4rem;padding-top:1.4rem;border-top:3px solid var(--mercury);max-width:20em}
+
+section{padding:9vh 0 0}
+h2{font-family:var(--serif);font-weight:800;font-size:clamp(22px,3vw,28px);line-height:1.4;margin-bottom:1.6rem}
+p+p{margin-top:1.3em}
+.lead{font-family:var(--serif);font-weight:500;font-size:clamp(19px,2.5vw,23px);line-height:1.85}
+.lead + p{color:var(--mute)}
+
+ul.who{list-style:none;padding:0}
+ul.who li{padding:1.05rem 0 1.05rem 1.6rem;border-top:1px solid var(--line);position:relative;line-height:1.7}
+ul.who li:last-child{border-bottom:1px solid var(--line)}
+ul.who li::before{content:"";position:absolute;left:0;top:1.75rem;width:8px;height:8px;border-radius:50%;background:var(--mercury)}
+
+dl{display:grid;grid-template-columns:7.5em 1fr;border-top:3px solid var(--ink)}
+dt,dd{padding:1rem 0;border-bottom:1px solid var(--line);line-height:1.7}
+dt{font-weight:600;font-size:15px}
+dd{padding-left:.5rem}
+
+ol.rules{list-style:none;padding:0;counter-reset:r}
+ol.rules li{counter-increment:r;display:grid;grid-template-columns:3.2rem 1fr;padding:1.1rem 0;border-top:1px solid var(--line);line-height:1.75}
+ol.rules li:last-child{border-bottom:1px solid var(--line)}
+ol.rules li::before{content:counter(r);font-family:var(--serif);font-weight:800;font-size:28px;line-height:1.2;color:var(--ink)}
+
+.closing p{color:var(--mute)}
+.closing .big{color:var(--ink);font-family:var(--serif);font-weight:500;font-size:clamp(20px,2.8vw,26px);line-height:1.8}
+.finale{margin-top:12vh;padding-top:2rem;border-top:3px solid var(--mercury);font-family:var(--serif);font-weight:800;font-size:clamp(26px,4.4vw,42px);line-height:1.5;letter-spacing:-.02em}
+
+@media (max-width:640px){
+  body{font-size:16px}
+  .ruler{width:30px}
+  .ruler{background:repeating-linear-gradient(to bottom,var(--ink) 0 1px,transparent 1px 12px) right 0 top 0/10px 100% no-repeat,
+                    repeating-linear-gradient(to bottom,var(--ink) 0 1px,transparent 1px 60px) right 0 top 0/16px 100% no-repeat}
+  .ruler b{display:none}
+  main{margin-left:30px;padding-left:20px;padding-right:20px}
+  dl{grid-template-columns:1fr}
+  dt{padding-bottom:0;border-bottom:0}
+  dd{padding-left:0;padding-top:.2rem}
+}
+.snd{position:fixed;top:calc(env(safe-area-inset-top,0px) + 14px);right:14px;z-index:5;display:flex;align-items:center;gap:.55rem;padding:.55rem 1rem;border:1px solid var(--ink);border-radius:999px;background:var(--paper);color:var(--ink);font:400 14px/1 var(--sans);cursor:pointer}
+.snd:focus-visible{outline:3px solid var(--mercury);outline-offset:2px}
+.snd .dot{width:8px;height:8px;border-radius:50%;background:var(--mute)}
+.snd[aria-pressed="true"] .dot{background:var(--mercury);animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{50%{transform:scale(1.6);opacity:.5}}
+@media (prefers-reduced-motion:reduce){.ruler i{transition:none}.snd .dot{animation:none!important}}
+</style>
+</head>
+<body>
+<div class="ruler" aria-hidden="true"><i id="fill"></i><b>온도기</b></div>
+<button class="snd" id="snd" type="button" aria-pressed="false"><span class="dot"></span><span id="sndl">음악 켜기</span></button>
+<main>
+<div class="wrap">
+
+<header>
+  <p class="pre">독서모임 초대장</p>
+  <h1>온도기<span>에 초대합니다</span></h1>
+  <p class="sub">책에서 시작해, 서로의 세계를 발견하는 시간</p>
+</header>
+
+<section>
+  <p class="lead">이 모임은 책을 완독해야만 참여할 수 있는 독서모임이 아닙니다.</p>
+  <p>책의 한 챕터, 마음에 남은 한 문장, 전시회에서 발견한 작품, 일상에서 만난 질문 하나도 좋은 이야기의 시작이 될 수 있습니다.</p>
+  <p>우리는 각자가 발견한 것을 가져와 함께 나누고, 서로 다른 시선 속에서 새로운 생각을 발견합니다.</p>
+</section>
+
+<section>
+  <h2>이런 분과 함께하고 싶습니다</h2>
+  <ul class="who">
+    <li>책을 통해 다른 사람의 생각과 경험을 만나고 싶은 분</li>
+    <li>완독에 대한 부담 없이 자신의 속도로 읽고 싶은 분</li>
+    <li>전시, 영화, 음악, 일상 속에서 발견한 것을 나누고 싶은 분</li>
+    <li>다른 사람의 생각을 존중하며 자신의 이야기도 편안하게 꺼내고 싶은 분</li>
+  </ul>
+</section>
+
+<section>
+  <h2>모임은 이렇게 진행됩니다</h2>
+  <dl>
+    <dt>정기 모임</dt><dd>Zoom 온라인 모임</dd>
+    <dt>참여 방식</dt><dd>책 한 챕터, 한 문장, 작품이나 경험 하나로 참여 가능</dd>
+    <dt>인원</dt><dd>호스트 포함 최대 5명</dd>
+    <dt>오프라인 만남</dt><dd>원년 멤버 중심으로 2개월에 한 번 또는 특별 이벤트 시 진행</dd>
+    <dt>참여 안내</dt><dd>모임 일정과 주제, 준비할 내용을 사전에 공유합니다.</dd>
+  </dl>
+</section>
+
+<section>
+  <h2>함께 지키고 싶은 약속</h2>
+  <ol class="rules">
+    <li>완독 여부나 지식의 많고 적음으로 서로를 평가하지 않습니다.</li>
+    <li>자신의 생각을 나누되, 다른 사람에게 정답을 강요하지 않습니다.</li>
+    <li>서로의 이야기를 허락 없이 외부에 공유하지 않습니다.</li>
+    <li>모든 사람이 충분히 이야기할 수 있도록 발언 시간을 배려합니다.</li>
+    <li>참여가 어려울 때는 미리 알려주고, 서로의 시간을 존중합니다.</li>
+  </ol>
+</section>
+
+<section class="closing">
+  <p class="big">이 모임은 처음부터 완성된 모임이 아닙니다. 함께 만들어가며 더 좋은 방식을 찾아가는 중입니다.</p>
+  <p>때로는 예상하지 못한 이야기가 나오고, 때로는 우리의 생각이 달라질 수도 있습니다. 그 과정까지도 함께 배우는 시간으로 만들고 싶습니다.</p>
+  <p class="big" style="margin-top:2.4rem">책을 다 읽지 못했더라도 괜찮습니다.<br>지금 마음에 남아 있는 질문 하나를 가지고 오세요.</p>
+  <p class="finale">한 사람의 발견이 다른 사람의 세계를 넓히는 시간, 함께 만들어가요.</p>
+</section>
+
+</div>
+</main>
+<script>
+(function(){
+  var f=document.getElementById('fill');
+  function u(){
+    var h=document.documentElement,max=h.scrollHeight-h.clientHeight;
+    var p=max>0?Math.min(1,(window.scrollY||0)/max):0;
+    f.style.height=(8+p*92)+'%';
+  }
+  addEventListener('scroll',u,{passive:true});addEventListener('resize',u);u();
+})();
+</script>
+<script>
+(function(){
+  var btn=document.getElementById('snd'),lab=document.getElementById('sndl');
+  var ctx,master,bus,timer,nextT=0,bar=0,on=false;
+  var chords=[[57,60,64,67,71],[53,57,60,64,67],[48,55,59,64,67],[55,59,62,64,69]];
+  var pat=[0,2,4,3,2,4,1,3];
+  function hz(m){return 440*Math.pow(2,(m-69)/12)}
+  function build(){
+    ctx=new (window.AudioContext||window.webkitAudioContext)();
+    master=ctx.createGain();master.gain.value=0;master.connect(ctx.destination);
+    bus=ctx.createGain();bus.connect(master);
+    var d=ctx.createDelay(1);d.delayTime.value=.46;
+    var fb=ctx.createGain();fb.gain.value=.42;
+    var lp=ctx.createBiquadFilter();lp.type='lowpass';lp.frequency.value=2200;
+    bus.connect(d);d.connect(lp);lp.connect(fb);fb.connect(d);lp.connect(master);
+  }
+  function tone(type,f,t,att,dur,vol){
+    var o=ctx.createOscillator(),g=ctx.createGain();
+    o.type=type;o.frequency.value=f;
+    g.gain.setValueAtTime(0.0001,t);
+    g.gain.linearRampToValueAtTime(vol,t+att);
+    g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+    o.connect(g);g.connect(bus);o.start(t);o.stop(t+dur+.1);
+  }
+  function schedBar(t){
+    var c=chords[bar%4];bar++;
+    tone('sine',hz(c[0]-12),t,2.4,8.5,.16);
+    tone('sine',hz(c[1]-12),t,2.8,8.5,.1);
+    for(var i=0;i<8;i++){
+      var m=c[pat[i]%c.length]+(i%4===2?12:0);
+      var tt=t+i*1+(Math.random()*.06);
+      var v=.07+Math.random()*.035;
+      tone('sine',hz(m),tt,.015,3.2,v);
+      tone('sine',hz(m)*2,tt,.01,1.4,v*.28);
+    }
+  }
+  function tick(){
+    while(nextT<ctx.currentTime+3){schedBar(nextT);nextT+=8;}
+  }
+  function start(){
+    if(!ctx)build();
+    ctx.resume();
+    nextT=ctx.currentTime+.1;tick();
+    clearInterval(timer);timer=setInterval(tick,1000);
+    master.gain.cancelScheduledValues(ctx.currentTime);
+    master.gain.setValueAtTime(master.gain.value,ctx.currentTime);
+    master.gain.linearRampToValueAtTime(.8,ctx.currentTime+2.5);
+  }
+  function stop(){
+    master.gain.cancelScheduledValues(ctx.currentTime);
+    master.gain.setValueAtTime(master.gain.value,ctx.currentTime);
+    master.gain.linearRampToValueAtTime(0,ctx.currentTime+1.2);
+    clearInterval(timer);
+    setTimeout(function(){if(!on)ctx.suspend()},1500);
+  }
+  btn.addEventListener('click',function(){
+    try{
+      on=!on;
+      if(on)start();else stop();
+      btn.setAttribute('aria-pressed',on?'true':'false');
+      lab.textContent=on?'음악 끄기':'음악 켜기';
+    }catch(e){on=false;lab.textContent='재생할 수 없어요';}
+  });
+})();
+</script>
+</body>
+</html>
