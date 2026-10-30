@@ -81,6 +81,11 @@ ol.rules li::before{content:counter(r);font-family:var(--serif);font-weight:800;
 .snd .dot{width:8px;height:8px;border-radius:50%;background:var(--mute)}
 .snd[aria-pressed="true"] .dot{background:var(--mercury);animation:pulse 2.4s ease-in-out infinite}
 @keyframes pulse{50%{transform:scale(1.6);opacity:.5}}
+.more{display:block;margin-top:3rem;padding:1.3rem 1.5rem;border:1px solid var(--ink);color:var(--ink);text-decoration:none;font-family:var(--serif);font-weight:500;font-size:19px;line-height:1.5}
+.more span{display:block;margin-top:.35rem;font:600 14px/1.4 var(--sans);color:var(--mercury)}
+.more:hover,.more:focus-visible{background:var(--ink);color:var(--paper)}
+.more:hover span,.more:focus-visible span{color:var(--paper)}
+.more:focus-visible{outline:3px solid var(--mercury);outline-offset:3px}
 @media (prefers-reduced-motion:reduce){.ruler i{transition:none}.snd .dot{animation:none!important}}
 </style>
 </head>
@@ -139,6 +144,7 @@ ol.rules li::before{content:counter(r);font-family:var(--serif);font-weight:800;
   <p>때로는 예상하지 못한 이야기가 나오고, 때로는 우리의 생각이 달라질 수도 있습니다. 그 과정까지도 함께 배우는 시간으로 만들고 싶습니다.</p>
   <p class="big" style="margin-top:2.4rem">책을 다 읽지 못했더라도 괜찮습니다.<br>지금 마음에 남아 있는 질문 하나를 가지고 오세요.</p>
   <p class="finale">한 사람의 발견이 다른 사람의 세계를 넓히는 시간, 함께 만들어가요.</p>
+  <a class="more" href="index.html">이번 겨울, 크리스마스 스페셜도 있어요<span>식사 사이, 간식 한 접시 보기 →</span></a>
 </section>
 
 </div>
